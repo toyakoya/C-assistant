@@ -116,6 +116,7 @@
         <v-row>
           <v-btn
             style="margin-left: auto; margin-right: auto"
+            :disabled="!rcv"
             @click="startAssist"
           >
             开始
@@ -154,7 +155,11 @@
         </v-row>
 
         <v-row>
-          <v-btn style="margin-left: auto; margin-right: auto" @click="askmore">
+          <v-btn
+            style="margin-left: auto; margin-right: auto"
+            :disabled="!rcv"
+            @click="askmore"
+          >
             追问
           </v-btn>
         </v-row>
@@ -180,6 +185,7 @@ const OnlineModelsStore = useOnlineModelsStore();
 const LocalModelsStore = useLocalModelsStore();
 const ApikeyStore = useApikeyStore();
 const ChatStore = useChatStore();
+var rcv = 1;
 function addsample() {
   problemInfStore.examples.push({ input: "", output: "" });
 }
@@ -201,8 +207,9 @@ async function getWebsite() {
     alert("请输入cookies");
     return;
   }
+  rcv = 0;
   const response = await GetProblem(url, cookies);
-
+  rcv = 1;
   console.log("获取到的数据：", response);
   if (response) {
     problemInfStore.problem = response.problem_text;
@@ -245,7 +252,9 @@ async function askmore() {
       content: problemInfStore.inputMessage,
     });
     problemInfStore.inputMessage = "";
+    rcv = 0;
     const ans = await LocalChat(model, payload);
+    rcv = 1;
     ChatStore.chatHistory.push({
       role: "assistant",
       content: ans.response,
@@ -262,7 +271,9 @@ async function askmore() {
       content: problemInfStore.inputMessage,
     });
     problemInfStore.inputMessage = "";
+    rcv = 0;
     const ans = await OnlineChat(model, payload);
+    rcv = 1;
     ChatStore.chatHistory.push({
       role: "assistant",
       content: ans,
@@ -289,7 +300,9 @@ async function startAssist() {
   ChatStore.ans = "";
   if (ModelSelectStore.Modelkind === "本地大模型") {
     const model = LocalModelsStore.selectedLocalModel;
+    rcv = 0;
     const ans = await LocalSolve(model, payload);
+    rcv = 1;
     ChatStore.ans = ans.response;
     console.log(ans.response);
   } else if (ModelSelectStore.Modelkind === "线上大模型") {
@@ -297,7 +310,9 @@ async function startAssist() {
       modelName: OnlineModelsStore.selectedOnlineModel,
       apikey: ApikeyStore.apikey,
     };
+    rcv = 0;
     const ans = await OnlineSolve(model, payload);
+    rcv = 1;
     ChatStore.ans = ans;
     console.log("使用线上大模型进行处理");
   } else {
