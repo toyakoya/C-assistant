@@ -1,1 +1,9 @@
-# C-assistant
+# 项目说明
+这是作者本人本科毕设的、码，是一个基于大模型的C语言助教系统，用于解决乐学平台的编程问题。
+
+## 使用说明
+前端部分需要在命令行front目录下：
+` pnpm run dev `
+后端部分需要在命令行back目录下进入虚拟环境.venv,然后：
+` py ./ai_backend/manage.py runserver`
+
