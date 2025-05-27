@@ -3,7 +3,5 @@
 
 ## 使用说明
 前端部分需要在命令行中front目录下：
-·
-pnpm run dev
-·
+` pnpm run dev `
 
