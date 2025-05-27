@@ -4,6 +4,7 @@
 ## 使用说明
 前端部分需要在命令行front目录下：
 ` pnpm run dev `
+
 后端部分需要在命令行back目录下进入虚拟环境.venv,然后：
 ` py ./ai_backend/manage.py runserver`
 
